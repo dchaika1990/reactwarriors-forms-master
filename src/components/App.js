@@ -1,37 +1,37 @@
 import React from "react";
+import countries from '../data/countries'
 
 export default class App extends React.Component {
 
   state = {
     username: '',
     password: '',
-    repeatPassword: ''
+    repeatPassword: '',
+    county: '',
   }
 
   onSubmit = (event) => {
     event.preventDefault();
-    console.log(this.username.value, this.password.value);
   }
 
-  onChangeUsername = event => {
+  onChange = event => {
+    console.log(event.target.name, event.target.value);
     this.setState({
-      username: event.target.value,
+      [event.target.name]: event.target.value,
     })
   }
 
-  onChangePassword = event => {
-    this.setState({
-      password: event.target.value,
-    })
-  }
-
-  onChangeRepeatPassword = event => {
-    this.setState({
-      repeatPassword: event.target.value,
-    })
+  getOptionsItems = items => {
+    return items.map(item => (
+      <option key={item.id} value={item.id}>{item.name}</option>
+    ))
   }
 
   render() {
+
+    // const getOptionsCountries = countries.map(country => (
+    //   <option key={country.id} value={country.id}>{country.name}</option>
+    // ));
 
     return (
       <div className="form-container card">
@@ -42,9 +42,10 @@ export default class App extends React.Component {
               type="text"
               className="form-control"
               placeholder="Enter username"
-              ref={ node => ( this.username = node ) }
+              name='username'
+              ref={node => (this.username = node)}
               value={this.state.username}
-              onChange={this.onChangeUsername}
+              onChange={this.onChange}
             />
           </div>
           <div className="form-group">
@@ -53,9 +54,10 @@ export default class App extends React.Component {
               type="text"
               className="form-control"
               placeholder="Enter password"
-              ref={ node => ( this.password = node ) }
+              name='password'
+              ref={node => (this.password = node)}
               value={this.state.password}
-              onChange={this.onChangePassword}
+              onChange={this.onChange}
             />
           </div>
           <div className="form-group">
@@ -64,10 +66,23 @@ export default class App extends React.Component {
               type="text"
               className="form-control"
               placeholder="Enter repeat password"
-              ref={ node => ( this.repeatPassword = node ) }
+              name='repeatPassword'
+              ref={node => (this.repeatPassword = node)}
               value={this.state.repeatPassword}
-              onChange={this.onChangeRepeatPassword}
+              onChange={this.onChange}
             />
+          </div>
+          <div className="form-group">
+            <label htmlFor="county">County</label>
+            <select
+              className="form-control"
+              id="county"
+              name='county'
+              value={this.state.county}
+              onChange={this.onChange}
+            >
+              {this.getOptionsItems(countries)}
+            </select>
           </div>
           <button type="submit" className="btn btn-primary w-100" onClick={this.onSubmit}>
             Submit
