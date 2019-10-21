@@ -10,11 +10,32 @@ export default class App extends React.Component {
     county: '',
     gender: 'male',
     agree: true,
-    avatar: ''
+    avatar: '',
+    errors: {
+      username: false,
+      password: false,
+      repeatPassword: false
+    }
   }
 
   onSubmit = (event) => {
     event.preventDefault();
+    const errors = {};
+
+    if ( this.state.username.length < 5 ) errors.username = 'Must be 5 characters or more';
+    if ( this.state.password < 3 ) errors.password = 'Password Must be 3 characters or more';
+    if ( this.state.password !== this.state.repeatPassword ) errors.repeatPassword = 'Must be equil password';
+
+    if ( Object.keys(errors).length > 0 ) {
+      this.setState({
+        errors: errors
+      })
+    } else {
+      this.setState({
+        errors: {}
+      })
+      console.log('submit', this.state);
+    }
   }
 
   onChange = event => {
@@ -65,6 +86,11 @@ export default class App extends React.Component {
               value={this.state.username}
               onChange={this.onChange}
             />
+            {this.state.errors.username ? (
+              <div className="invalid-feedback">
+                {this.state.errors.username}
+              </div>
+            ) : null}
           </div>
           <div className="form-group">
             <label>Password</label>
@@ -77,6 +103,11 @@ export default class App extends React.Component {
               value={this.state.password}
               onChange={this.onChange}
             />
+            {this.state.errors.password ? (
+              <div className="invalid-feedback">
+                {this.state.errors.password}
+              </div>
+            ) : null}
           </div>
           <div className="form-group">
             <label>Repeat password</label>
@@ -89,6 +120,11 @@ export default class App extends React.Component {
               value={this.state.repeatPassword}
               onChange={this.onChange}
             />
+            {this.state.errors.repeatPassword ? (
+              <div className="invalid-feedback">
+                {this.state.errors.repeatPassword}
+              </div>
+            ) : null}
           </div>
           <div className="form-group">
             <label htmlFor="county">County</label>
