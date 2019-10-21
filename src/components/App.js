@@ -8,6 +8,8 @@ export default class App extends React.Component {
     password: '',
     repeatPassword: '',
     county: '',
+    gender: 'male',
+    agree: true,
   }
 
   onSubmit = (event) => {
@@ -15,9 +17,14 @@ export default class App extends React.Component {
   }
 
   onChange = event => {
-    console.log(event.target.name, event.target.value);
     this.setState({
       [event.target.name]: event.target.value,
+    })
+  }
+
+  onChangeAgree = event => {
+    this.setState({
+      [event.target.name]: event.target.checked,
     })
   }
 
@@ -83,6 +90,49 @@ export default class App extends React.Component {
             >
               {this.getOptionsItems(countries)}
             </select>
+          </div>
+          <fieldset className="form-group">
+            <div>Gender</div>
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="radio"
+                id='male'
+                name='gender'
+                value='male'
+                checked={this.state.gender === 'male'}
+                onChange={this.onChange}
+              />
+              <label className="form-check-label" htmlFor="male">
+                Male
+              </label>
+            </div>
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="radio"
+                id='female'
+                name='gender'
+                value='female'
+                checked={this.state.gender === 'female'}
+                onChange={this.onChange}
+              />
+              <label className="form-check-label" htmlFor="female">
+                Female
+              </label>
+            </div>
+          </fieldset>
+          <div className="form-check ">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id="agree"
+              name='agree'
+              value={this.state.agree}
+              onChange={this.onChangeAgree}
+              checked={this.state.agree}
+            />
+            <label className="form-check-label" htmlFor="agree">Agree</label>
           </div>
           <button type="submit" className="btn btn-primary w-100" onClick={this.onSubmit}>
             Submit
