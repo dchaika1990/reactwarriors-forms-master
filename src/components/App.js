@@ -11,10 +11,12 @@ export default class App extends React.Component {
     gender: 'male',
     agree: true,
     avatar: '',
+    age: 16,
     errors: {
       username: false,
       password: false,
-      repeatPassword: false
+      repeatPassword: false,
+      age: false,
     }
   }
 
@@ -22,11 +24,11 @@ export default class App extends React.Component {
     event.preventDefault();
     const errors = {};
 
-    if ( this.state.username.length < 5 ) errors.username = 'Must be 5 characters or more';
-    if ( this.state.password < 3 ) errors.password = 'Password Must be 3 characters or more';
-    if ( this.state.password !== this.state.repeatPassword ) errors.repeatPassword = 'Must be equil password';
+    if (this.state.username.length < 5) errors.username = 'Must be 5 characters or more';
+    if (this.state.password < 3) errors.password = 'Password Must be 3 characters or more';
+    if (this.state.password !== this.state.repeatPassword) errors.repeatPassword = 'Must be equil password';
 
-    if ( Object.keys(errors).length > 0 ) {
+    if (Object.keys(errors).length > 0) {
       this.setState({
         errors: errors
       })
@@ -64,6 +66,32 @@ export default class App extends React.Component {
       })
     }
     reader.readAsDataURL(event.target.files[0]);
+  }
+
+  incrementAge = () => {
+    this.setState((prevState, prevProps) => ({
+      age: prevState.age + 1
+    }), () => {
+        this.setState({
+          errors: {
+            age: this.state.age < 18 ? 'Must be more 18' : false
+          }
+        })
+      
+    })
+  }
+
+  decrementAge = () => {
+    this.setState((prevState, prevProps) => ({
+      age: prevState.age - 1
+    }), () => {
+        this.setState({
+          errors: {
+            age: this.state.age < 18 ? 'Must be more 18' : false
+          }
+        })
+      
+    })
   }
 
   render() {
@@ -177,6 +205,28 @@ export default class App extends React.Component {
               id="avatar"
               name='avatar'
               onChange={this.onChangeAvatar} />
+          </div>
+          <div className="form-group">
+            <div>
+              <label>Age</label>
+            </div>
+            <div className="btn-group">
+              <button className='btn btn-secondary' type='button' onClick={this.decrementAge}>-</button>
+              <input
+                type="number"
+                className="form-control"
+                placeholder="Enter age"
+                name='age'
+                value={this.state.age}
+                onChange={this.onChange}
+              />
+              <button className='btn btn-secondary' type='button' onClick={this.incrementAge}>+</button>
+            </div>
+            {this.state.errors.age ? (
+              <div className="invalid-feedback">
+                {this.state.errors.age}
+              </div>
+            ) : null}
           </div>
           <div className="form-check mb-4">
             <input
